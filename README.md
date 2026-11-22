@@ -8,6 +8,14 @@ Forge Neo의 `txt2img`에서 Anima용 BSK Camera Control LoRA를 조작하는 �
 
 예시는 `NovaAnimeAMV70`, 시드 `482719`, LoRA 강도 `0.8`, 방향 `145°`, 높이 `42°`, 거리 `-85`, 롤 `35°`로 생성했습니다. PNG에 실제 생성 프롬프트와 설정이 들어 있습니다.
 
+거리 `-100`의 조정 전후 비교입니다. 두 이미지는 `NovaAnimeAMV70`, 시드 `482719`, LoRA 강도 `0.8`, 방향 `0°`, 높이 `0°`로 생성했습니다. 조정 후 예시에서 인물 높이는 화면의 약 26%입니다.
+
+| v1.0 거리 조정 후 | v1.1 원경 조정 후 |
+| --- | --- |
+| ![거리 -100 조정 전](docs/images/distance-before.png) | ![거리 -100 조정 후](docs/images/distance-after.png) |
+
+v1.1은 원경에서 `wide shot`의 가중치를 높이고 방향과 높이 가중치를 조정합니다. 인물 크기와 구도는 모델, 시드, 프롬프트에 따라 달라집니다.
+
 ## 설치
 
 ### 준비
@@ -24,7 +32,7 @@ cd 'E:\sd-webui-forge-neo\extensions'
 git clone https://github.com/dsw1357/forge-neo-bsk-anima-camera-control.git forge-bsk-camera-control
 ```
 
-ZIP으로 설치하려면 [v1.0 릴리스](https://github.com/dsw1357/forge-neo-bsk-anima-camera-control/releases/tag/v1.0)의 `forge-bsk-camera-control.zip`을 받습니다. 압축을 풀어 `forge-bsk-camera-control` 폴더를 `extensions` 아래에 둡니다. 확장 폴더 바로 아래에 `scripts`, `javascript`, `metadata.ini`가 보여야 합니다. 이미 같은 확장이 설치돼 있다면 기존 폴더를 백업한 뒤 교체합니다.
+ZIP으로 설치하려면 [최신 릴리스](https://github.com/dsw1357/forge-neo-bsk-anima-camera-control/releases/latest)의 **Source code (zip)**을 받습니다. 압축을 풀고 폴더 이름을 `forge-bsk-camera-control`로 바꿔 `extensions` 아래에 둡니다. 확장 폴더 바로 아래에 `scripts`, `javascript`, `metadata.ini`가 보여야 합니다. 이미 같은 확장이 설치돼 있다면 기존 폴더를 백업한 뒤 교체합니다.
 
 ### LoRA 설치
 

@@ -5,14 +5,13 @@ import json
 import gradio as gr
 
 from backend.diffusion_engine.anima import Anima
-from bsk_camera_tags import CameraControlNode
+from bsk_camera_tags import DEFAULT_CONFIG, DIST_RANGES, CameraControlNode
 from modules import extra_networks, scripts
 from modules.ui_components import InputAccordion
 
 
 LORA_NAME = "BSKAnimaCamera-v1.0"
 DEFAULT_STRENGTH = 0.8
-CAMERA = CameraControlNode()
 ORBIT_VIEW = """
 <div class="bsk-orbit" data-bsk-orbit>
     <div class="bsk-orbit__header">
@@ -36,9 +35,45 @@ ORBIT_VIEW = """
 """
 
 
+def wide_shot_progress(distance):
+    far, near = DIST_RANGES["wide"]
+    return max(0.0, min(1.0, (near - distance) / (near - far)))
+
+
+class ForgeCameraControlNode(CameraControlNode):
+    @classmethod
+    def _distance_parts(cls, cfg, z):
+        category = cfg["distance"]["categories"].get(cls._distance_key(z), {})
+        tag = category.get("tag")
+        if not tag or not category.get("enabled", True):
+            return []
+
+        weight = 1.0 + 4.0 * min(abs(z), 1.0) + 7.0 * wide_shot_progress(z)
+        return cls._emit_weighted(tag, weight)
+
+
+CAMERA = ForgeCameraControlNode()
+
+
 def camera_tags(azimuth, elevation, distance, roll, plain):
-    config = json.dumps({"no_weight": plain})
-    tags, = CAMERA.execute(azimuth / 180, elevation / 90, distance / 100, roll / 180, config)
+    z = distance / 100
+    config = {"no_weight": plain}
+    progress = wide_shot_progress(z)
+    if progress and not plain:
+        # At the far end, let the framing cue outweigh the angle cues.
+        azimuth_scale = 1.0 - 0.9 * progress
+        elevation_scale = 1.0 - (2.0 / 3.0) * progress
+        azimuth_defaults = DEFAULT_CONFIG["azimuth"]
+        elevation_defaults = DEFAULT_CONFIG["elevation"]
+        config["azimuth"] = {
+            "weight": azimuth_defaults["weight"] * azimuth_scale,
+            "deadzone_ratio": azimuth_defaults["deadzone_ratio"] * azimuth_scale,
+        }
+        config["elevation"] = {
+            "eye_peak": elevation_defaults["eye_peak"] * elevation_scale,
+            "extra": (1.0 + elevation_defaults["extra"]) * elevation_scale - 1.0,
+        }
+    tags, = CAMERA.execute(azimuth / 180, elevation / 90, z, roll / 180, json.dumps(config))
     return tags.rstrip(", ")
 
 
