@@ -13,7 +13,7 @@ Forge Neo의 `txt2img`에서 Anima용 BSK Camera Control LoRA를 조작하는 �
 ### 준비
 
 - Anima를 지원하는 Forge Neo와 Anima 체크포인트를 준비합니다. Forge Neo `neo-2.28`의 `NovaAnimeAMV70`, `qwen_3_06b_base.safetensors`, `qwen_image_vae.safetensors` 조합에서 확인했습니다.
-- Git으로 설치하려면 이 비공개 저장소를 읽을 수 있는 GitHub 계정으로 인증합니다. ZIP으로 설치하려면 같은 계정으로 저장소를 엽니다.
+- Git으로 설치하려면 Git을 준비합니다. ZIP 설치에는 Git이 필요하지 않습니다.
 
 ### 확장 설치
 
@@ -24,7 +24,7 @@ cd 'E:\sd-webui-forge-neo\extensions'
 git clone https://github.com/dsw1357/forge-neo-bsk-anima-camera-control.git forge-bsk-camera-control
 ```
 
-ZIP으로 설치하려면 이 저장소의 **Code → Download ZIP**을 선택합니다. 압축을 풀고 폴더 이름을 `forge-bsk-camera-control`로 바꿔 `extensions` 아래에 둡니다. 확장 폴더 바로 아래에 `scripts`, `javascript`, `metadata.ini`가 보여야 합니다. 이미 같은 확장이 설치돼 있다면 기존 폴더를 백업한 뒤 교체합니다.
+ZIP으로 설치하려면 [v1.0 릴리스](https://github.com/dsw1357/forge-neo-bsk-anima-camera-control/releases/tag/v1.0)의 `forge-bsk-camera-control.zip`을 받습니다. 압축을 풀어 `forge-bsk-camera-control` 폴더를 `extensions` 아래에 둡니다. 확장 폴더 바로 아래에 `scripts`, `javascript`, `metadata.ini`가 보여야 합니다. 이미 같은 확장이 설치돼 있다면 기존 폴더를 백업한 뒤 교체합니다.
 
 ### LoRA 설치
 
